@@ -109,7 +109,7 @@ def analyze():
     
         # Find the main content of the article (usually within <p> tags)
         article_text = ""
-        for paragraph in soup.find_all("div", class_="ssrcss-11r1m41-RichTextComponentWrapper ep2nwvo0"):
+        for paragraph in soup.find_all("p"):
             article_text += paragraph.get_text() + "\n"
 
         # Clean the extracted text (remove extra spaces, newlines, etc.)
@@ -161,7 +161,7 @@ def analyze():
         conn.commit()
         cur.close()
     
-        return render_template("details.html", data=data[-1])
+        return render_template("details.html", data=data)
 
 @app.route("/admin",methods=['GET',"POST"])
 def admin():
@@ -187,7 +187,7 @@ def verify_admin():
             return render_template('verify.html')
 
 @app.route("/viewdetail/<url>", methods=["GET", "POST"])
-def viewdetail(id):
+def viewdetail(url):
     conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (url))
