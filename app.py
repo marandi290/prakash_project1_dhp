@@ -69,7 +69,7 @@ def github_authorize():
         if username in github_admin_usernames:
             conn  = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT ID, url FROM news_table")
+            cur.execute("SELECT url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -156,7 +156,7 @@ def analyze():
         conn.commit()
     
         # show it on the html page
-        cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table ORDER BY ID DESC LIMIT 1")
+        cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table")
         data = cur.fetchall()
         conn.commit()
         cur.close()
