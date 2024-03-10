@@ -151,32 +151,7 @@ def analyze():
         # store it in the database
         # create table
         cur.execute("CREATE TABLE IF NOT EXISTS news_table (Title VARCHAR(500), News VARCHAR(10000), Sentence_no INT, Words_no INT, Stopwords_no INT, Postages VARCHAR(500), url VARCHAR(1000))")
-        table_name = "news_table"
-        column_name = "ID"
-
-        # Check if the column already exists
-        check_column_query = sql.SQL("""
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_name = news_table AND column_name = ID
-        """).format(
-            table_name=sql.Identifier(table_name),
-            column_name=sql.Identifier(column_name)
-        )
-
-        cur.execute(check_column_query)
-
-        if not cur.fetchone():
-            # Column doesn't exist, so add it
-            add_column_query = sql.SQL("""
-                ALTER TABLE news_table
-                ADD COLUMN ID SERIAL PRIMARY KEY
-            """).format(
-                table_name=sql.Identifier(table_name),
-                column_name=sql.Identifier(column_name)
-            )
-
-            cur.execute(add_column_query)
+       
         cur.execute("INSERT INTO news_table (Title, News, Sentence_no, Words_no, Stopwords_no, Postages, url) VALUES (%s, %s, %s, %s, %s, %s, %s)", (news_title, cleaned_text, num_sentences, num_words, num_stop_words, a, url))
         conn.commit()
     
@@ -200,7 +175,7 @@ def verify_admin():
         if password == admin_pswd:
             conn = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT ID, url FROM news_table")
+            cur.execute("SELECT url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -211,11 +186,11 @@ def verify_admin():
         else:
             return render_template('verify.html')
 
-@app.route("/viewdetail/<id>", methods=["GET", "POST"])
+@app.route("/viewdetail/<url>", methods=["GET", "POST"])
 def viewdetail(id):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE ID=%s", (id))
+    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (url))
     data = cur.fetchall()
     
     return render_template("details.html", data=data)
