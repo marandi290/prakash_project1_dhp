@@ -9,6 +9,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk import pos_tag
 nltk.download("all")
 import json
+from werkzeug.urls import url_quote
+
 
 app = Flask(__name__, static_folder="/var/data/")
 oauth = OAuth(app)
