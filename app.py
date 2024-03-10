@@ -161,7 +161,7 @@ def analyze():
         conn.commit()
         cur.close()
     
-        return render_template("details.html", data=data)
+        return render_template("details.html", data=data[-1])
 
 @app.route("/admin",methods=['GET',"POST"])
 def admin():
