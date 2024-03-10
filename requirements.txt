@@ -1,1 +1,7 @@
+Flask
+authlib
+psycopg2
+requests
+beautifulsoup4
+nltk
 
