@@ -5,5 +5,5 @@ requests
 beautifulsoup4
 nltk
 gunicorn
-werkzeug
+
 
