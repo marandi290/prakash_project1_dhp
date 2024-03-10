@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk import pos_tag
-nltk.download("all")
+# nltk.download("all")
 import json
 
 
@@ -66,6 +66,7 @@ def github_authorize():
     if 'login' in resp:
         username = resp['login']
         if username in github_admin_usernames:
+            conn  = connect_db()
             cur = conn.cursor()
             cur.execute("SELECT ID, url FROM news_table")
             url_list = cur.fetchall()
@@ -91,6 +92,7 @@ def portal():
 def analyze():
     if request.method == "POST":
         # define the cur
+        conn = connect_db()
         cur = conn.cursor()
     
         # take url from "indx.html"
@@ -170,6 +172,7 @@ def verify_admin():
     if request.method == "POST":
         password = request.form['password']
         if password == admin_pswd:
+            conn = connect_db()
             cur = conn.cursor()
             cur.execute("SELECT ID, url FROM news_table")
             url_list = cur.fetchall()
@@ -184,6 +187,7 @@ def verify_admin():
 
 @app.route("/viewdetail/<id>", methods=["GET", "POST"])
 def viewdetail(id):
+    conn = connect_db()
     cur = conn.cursor()
     cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE ID=%s", (id))
     data = cur.fetchall()
@@ -191,5 +195,6 @@ def viewdetail(id):
     return render_template("details.html", data=data)
 if __name__=='__main__':
     app.run(debug=True, port=8000)
+    conn = connect_db()
     conn.close()
     
