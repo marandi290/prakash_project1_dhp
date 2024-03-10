@@ -156,7 +156,7 @@ def analyze():
         conn.commit()
     
         # show it on the html page
-        cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table")
+        cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table ORDER BY id DESC LIMIT 1")
         data = cur.fetchall()
         conn.commit()
         cur.close()
