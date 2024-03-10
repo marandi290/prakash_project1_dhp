@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        #verification-container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+    
+        h1 {
+            color: #333;
+        }
+    
+        p {
+            color: #555;
+        }
+    
+        #verification-form {
+            margin-top: 20px;
+        }
+    
+        #password-input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+    
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    
+        button:hover {
+            background-color: #45a049;
+        }
+    
+        #warning-message {
+            display: none;
+            color: #ff0000;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function showWarning() {
+            document.getElementById('warning-message').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div id="verification-container">
+        <h1>Admin Verification</h1>
+        <p><b>Please enter the password for admin access.</b></p>
+        <form id="verification-form" method='post' action="/verify_admin" onsubmit="return validateForm()">
+            <input type="password" name='password' id="password-input" placeholder="Enter Password..." required>
+            <button type="submit" name="submit"><b>Submit</b></button>
+        </form>
+        <br><br>
+        <div id="warning-message"><b>Incorrect password. Please try again.</b></div>
+    </div>
+
+    <h1>GitHub OAuth App</h1>
+    {% if logged_in %}
+        {% if is_admin %}
+        {% else %}
+            <p>You are not an admin user.</p>
+        {% endif %}
+    {% else %}
+        <a href="{{ url_for('github_login') }}">Login with GitHub</a>
+    {% endif %}
+    
+    <script>
+        function validateForm() {
+            var password = document.getElementById('password-input').value;
+            
+            // Add your server-side logic to check the password here
+            // For now, let's assume the password is incorrect
+            if (password !== 'emanuel') {
+                showWarning();
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission if password is correct
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        .container1 {
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        thead {
+            background-color: #f2f2f2;
+        }
+        
+        .container2 {
+            margin-top: 20px;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Style for Cleaned Text */
+        .container2 table {
+            width: 100%;
+        }
+        
+        .container2 td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        /* Responsive design for smaller screens */
+        @media screen and (max-width: 600px) {
+            .container1, .container2 {
+                margin: 10px;
+                padding: 15px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>
+        {% for item in  data %}
+        {{ item[0] }}                        <!--Title of the news article-->
+        {% endfor %}
+    </h1>
+    <div class="container1">
+        <table>
+            <thead>
+                <tr>
+                    <th>No. of Sentences</th>
+                    <th>No. of Words</th>
+                    <th>No. of Stopwords</th>
+                    <th>Postages</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item[2] }}</td>
+                    <td>{{ item[3] }}</td>
+                    <td>{{ item[4] }}</td>
+                    <td>{{ item[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="container2">
+            <table >
+                <thead>
+                    <tr>
+                        <th>Cleaned Text</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td>{{ item[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</body>
+</html>
