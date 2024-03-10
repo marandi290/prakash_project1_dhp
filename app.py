@@ -149,7 +149,7 @@ def analyze():
         url = str(URL)        # to store to url
         # store it in the database
         # create table
-        cur.execute("CREATE TABLE IF NOT EXISTS news_table (Title VARCHAR(500), News VARCHAR(10000), Sentence_no INT, Words_no INT, Stopwords_no INT, Postages VARCHAR(500), url VARCHAR(1000))")
+        cur.execute("CREATE TABLE IF NOT EXISTS news_table (ID SERIAL PRIMARY KEY, Title VARCHAR(500), News VARCHAR(10000), Sentence_no INT, Words_no INT, Stopwords_no INT, Postages VARCHAR(500), url VARCHAR(1000))")
 
         cur.execute("INSERT INTO news_table (Title, News, Sentence_no, Words_no, Stopwords_no, Postages, url) VALUES (%s, %s, %s, %s, %s, %s, %s)", (news_title, cleaned_text, num_sentences, num_words, num_stop_words, a, url))
         conn.commit()
