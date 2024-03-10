@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk import pos_tag
-nltk.download("stopwords")
+nltk.download("all")
 import json
 
 app = Flask(__name__, static_folder="/var/data/")
