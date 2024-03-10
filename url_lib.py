@@ -75,7 +75,11 @@ def github_authorize():
 
 
 # making connection to database.
-conn = psycopg2.connect(database='text_analyze', host='localhost', password='emanuel', user='postgres')
+def connect_db():
+    conn = psycopg2.connect(
+        host='dpg-cnmr6o2cn0vc738fmu8g-a', database='text_analyze', user='prakash_python', password='bbbZ0QbEVQdUHEzpKHNWgOpdqyUimwta'               
+    )
+    return conn
 
 @app.route("/",methods=['GET', 'POST'])
 def portal():
