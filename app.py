@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from authlib.integrations.flask_client import OAuth
 import psycopg2
-from psycopg2 import sql
 import requests
 from bs4 import BeautifulSoup
 import nltk
@@ -186,11 +185,11 @@ def verify_admin():
         else:
             return render_template('verify.html')
 
-@app.route("/viewdetail/<url>", methods=["GET", "POST"])
-def viewdetail(url):
+@app.route("/viewdetail/<URL>", methods=["GET", "POST"])
+def viewdetail(URL):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (url))
+    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (URL))
     data = cur.fetchall()
     
     return render_template("details.html", data=data)
