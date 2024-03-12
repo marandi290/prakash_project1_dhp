@@ -81,7 +81,7 @@
                 {% for URL in url_list %}
                     <tr>
                         <td>{{ URL }}</td>
-                        <td><a href="/viewdetail/{{URL}}" class="view-btn">View</a></td>
+                        <td><a href="{{ url_for('viewdetail', URL=URL) }}" class="view-btn">View</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
