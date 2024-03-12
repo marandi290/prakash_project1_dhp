@@ -189,7 +189,7 @@ def verify_admin():
 def viewdetail(URL):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (URL))
+    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (URL,))
     data = cur.fetchall()
     
     return render_template("details.html", data=data)
