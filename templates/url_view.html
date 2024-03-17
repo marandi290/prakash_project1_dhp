@@ -78,10 +78,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% for URL in url_list %}
+                {% for id, url in url_list %}
                     <tr>
+                        <td>{{ id }}</td>
                         <td>{{ URL }}</td>
-                        <td><a href="{{ url_for('viewdetail', URL=URL) }}" class="view-btn">View</a></td>
+                        <td><a href="/viewdetail/{{id}}" class="view-btn">View</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
