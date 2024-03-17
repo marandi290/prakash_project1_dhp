@@ -107,7 +107,13 @@ def add_id():
 
         # Commit the changes
         conn.commit()
+    except Exception as e:
+        print(f"Error: {e}")
+
+    finally:
+        # Close the connection
         cur.close()
+        conn.close()
     
 @app.route("/",methods=['GET', 'POST'])
 def portal():
