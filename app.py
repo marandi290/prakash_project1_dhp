@@ -68,7 +68,7 @@ def github_authorize():
         if username in github_admin_usernames:
             conn  = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT url FROM news_table")
+            cur.execute("SELECT ID, url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -206,7 +206,7 @@ def verify_admin():
         if password == admin_pswd:
             conn = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT url FROM news_table")
+            cur.execute("SELECT ID, url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -217,11 +217,11 @@ def verify_admin():
         else:
             return render_template('verify.html')
 
-@app.route("/viewdetail/<URL>", methods=["GET", "POST"])
-def viewdetail(URL):
+@app.route("/viewdetail/<id>", methods=["GET", "POST"])
+def viewdetail(id):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (URL,))
+    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE ID=%s", (id))
     data = cur.fetchall()
     
     return render_template("details.html", data=data)
