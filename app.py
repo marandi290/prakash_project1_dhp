@@ -68,7 +68,7 @@ def github_authorize():
         if username in github_admin_usernames:
             conn  = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT ID, url FROM news_table")
+            cur.execute("SELECT url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -150,20 +150,6 @@ def analyze():
         # store it in the database
         # create table
         cur.execute("CREATE TABLE IF NOT EXISTS news_table (Title VARCHAR(500), News VARCHAR(10000), Sentence_no INT, Words_no INT, Stopwords_no INT, Postages VARCHAR(500), url VARCHAR(1000))")
-
-        # Define the table name and column name
-        table_name = "news_table"
-        column_name = "ID"
-        # Check if the column already exists in the table
-        cur.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}' AND column_name = '{column_name}'")
-        existing_column = cur.fetchone()
-
-        if existing_column:
-            print(f"Column '{column_name}' already exists in table '{table_name}'.")
-        else:
-            # Add the column to the table
-            cur.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} SERIAL PRIMARY KEY;")
-            print(f"Column '{column_name}' added to table '{table_name}'.")
             
         cur.execute("INSERT INTO news_table (Title, News, Sentence_no, Words_no, Stopwords_no, Postages, url) VALUES (%s, %s, %s, %s, %s, %s, %s)", (news_title, cleaned_text, num_sentences, num_words, num_stop_words, a, url))
         conn.commit()
@@ -188,7 +174,7 @@ def verify_admin():
         if password == admin_pswd:
             conn = connect_db()
             cur = conn.cursor()
-            cur.execute("SELECT ID, url FROM news_table")
+            cur.execute("SELECT url FROM news_table")
             url_list = cur.fetchall()
 
             conn.commit()
@@ -199,11 +185,11 @@ def verify_admin():
         else:
             return render_template('verify.html')
 
-@app.route("/viewdetail/<id>", methods=["GET", "POST"])
-def viewdetail(id):
+@app.route("/viewdetail/<url>", methods=["GET", "POST"])
+def viewdetail(url):
     conn = connect_db()
     cur = conn.cursor()
-    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE ID=%s", (id))
+    cur.execute("SELECT Title, News, Sentence_no, Words_no, Stopwords_no, Postages FROM news_table WHERE url=%s", (url))
     data = cur.fetchall()
     
     return render_template("details.html", data=data)
