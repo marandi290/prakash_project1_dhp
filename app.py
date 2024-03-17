@@ -90,6 +90,7 @@ def add_id():
     table_name = "news_table"
     column_name = "ID"
 
+    # Connect to the PostgreSQL database
     try:
         conn = connect_db()
         cur = conn.cursor()
@@ -107,14 +108,15 @@ def add_id():
 
         # Commit the changes
         conn.commit()
+
     except Exception as e:
         print(f"Error: {e}")
 
     finally:
         # Close the connection
         cur.close()
-        conn.close()
-    
+        conn.close()
+        
 @app.route("/",methods=['GET', 'POST'])
 def portal():
     return render_template("index.html")
