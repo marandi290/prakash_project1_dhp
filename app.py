@@ -84,39 +84,6 @@ def connect_db():
     )
     return conn
     
-# add ID column in database
-def add_id():
-    # Define the table name and column name
-    table_name = "news_table"
-    column_name = "ID"
-
-    # Connect to the PostgreSQL database
-    try:
-        conn = connect_db()
-        cur = conn.cursor()
-
-        # Check if the column already exists in the table
-        cur.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}' AND column_name = '{column_name}'")
-        existing_column = cur.fetchone()
-
-        if existing_column:
-            print(f"Column '{column_name}' already exists in table '{table_name}'.")
-        else:
-            # Add the column to the table
-            cur.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} SERIAL PRIMARY KEY;")
-            print(f"Column '{column_name}' added to table '{table_name}'.")
-
-        # Commit the changes
-        conn.commit()
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-    finally:
-        # Close the connection
-        cur.close()
-        conn.close()
-        
 @app.route("/",methods=['GET', 'POST'])
 def portal():
     return render_template("index.html")
@@ -183,7 +150,21 @@ def analyze():
         # store it in the database
         # create table
         cur.execute("CREATE TABLE IF NOT EXISTS news_table (Title VARCHAR(500), News VARCHAR(10000), Sentence_no INT, Words_no INT, Stopwords_no INT, Postages VARCHAR(500), url VARCHAR(1000))")
-       
+
+        # Define the table name and column name
+        table_name = "news_table"
+        column_name = "ID"
+        # Check if the column already exists in the table
+        cur.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}' AND column_name = '{column_name}'")
+        existing_column = cur.fetchone()
+
+        if existing_column:
+            print(f"Column '{column_name}' already exists in table '{table_name}'.")
+        else:
+            # Add the column to the table
+            cur.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} SERIAL PRIMARY KEY;")
+            print(f"Column '{column_name}' added to table '{table_name}'.")
+            
         cur.execute("INSERT INTO news_table (Title, News, Sentence_no, Words_no, Stopwords_no, Postages, url) VALUES (%s, %s, %s, %s, %s, %s, %s)", (news_title, cleaned_text, num_sentences, num_words, num_stop_words, a, url))
         conn.commit()
     
