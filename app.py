@@ -83,7 +83,39 @@ def connect_db():
         host='dpg-cnmr6o2cn0vc738fmu8g-a', database='text_analyze', user='prakash_python', password='bbbZ0QbEVQdUHEzpKHNWgOpdqyUimwta'               
     )
     return conn
+    
+# add ID column in database
+def add_id():
+# Define the table name and column name
+table_name = "news_table"
+column_name = "ID"
 
+try:
+    conn = connect_db()
+    cur = conn.cursor()
+
+    # Check if the column already exists in the table
+    cur.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}' AND column_name = '{column_name}'")
+    existing_column = cur.fetchone()
+
+    if existing_column:
+        print(f"Column '{column_name}' already exists in table '{table_name}'.")
+    else:
+        # Add the column to the table
+        cur.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} SERIAL PRIMARY KEY;")
+        print(f"Column '{column_name}' added to table '{table_name}'.")
+
+    # Commit the changes
+    conn.commit()
+
+except Exception as e:
+    print(f"Error: {e}")
+
+finally:
+    # Close the connection
+    cur.close()
+    conn.close()
+    
 @app.route("/",methods=['GET', 'POST'])
 def portal():
     return render_template("index.html")
